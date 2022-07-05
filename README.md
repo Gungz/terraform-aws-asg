@@ -11,7 +11,7 @@ These types of resources are supported:
 
 ```hcl
 module "asg" {
-  source = "terraform-aws-modules/autoscaling/aws"
+  source = "app.terraform.io/ACME_Demo/asg/aws"
 
   name = "service"
 
