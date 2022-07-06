@@ -21,13 +21,11 @@ resource "aws_launch_configuration" "this" {
     for_each = var.ebs_block_device
     content {
       device_name = ebs_block_device.value["device_name"]
-      snapshot_id = ebs_block_device.value["snapshot_id"]
       volume_type = ebs_block_device.value["volume_type"]
       volume_size = ebs_block_device.value["volume_size"]
-      iops = ebs_block_device.value["iops"]
-      delete_on_termination = ebs_block_device.value["delete_on_termination"]
-      encrypted = ebs_block_device.value["encrypted"]
-      no_device = ebs_block_device.value["no_device"]
+      iops = lookup(ebs_block_device.value, "iops", 3000)
+      delete_on_termination = lookup(ebs_block_device.value, "delete_on_termination", false)
+      encrypted = lookup(ebs_block_device.value, "encrypted", false)
     }
   }
   
@@ -38,9 +36,9 @@ resource "aws_launch_configuration" "this" {
     content {
       volume_type = root_block_device.value["volume_type"]
       volume_size = root_block_device.value["volume_size"]
-      iops = root_block_device.value["iops"]
-      delete_on_termination = root_block_device.value["delete_on_termination"]
-      encrypted = root_block_device.value["encrypted"]
+      iops = lookup(root_block_device.value, "iops", 3000)
+      delete_on_termination = lookup(root_block_device.value, "delete_on_termination", false)
+      encrypted = lookup(root_block_device.value, "encrypted", false)
     }
   }
   
