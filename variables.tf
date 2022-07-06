@@ -90,7 +90,7 @@ variable "ebs_block_device" {
 
 variable "ephemeral_block_device" {
   description = "Customize Ephemeral (also known as 'Instance Store') volumes on the instance"
-  type        = list(string)
+  type        = list(map(string))
   default     = []
 }
 
