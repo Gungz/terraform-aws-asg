@@ -76,7 +76,7 @@ resource "aws_autoscaling_group" "this" {
   health_check_type         = var.health_check_type
 
   min_elb_capacity          = var.min_elb_capacity
-  wait_for_elb_capacity     = var.wait_for_elb_capacity
+  wait_for_elb_capacity     = var.wait_for_elb_capacity ? 1 : 0
   target_group_arns         = var.target_group_arns
   default_cooldown          = var.default_cooldown
   force_delete              = var.force_delete
@@ -89,10 +89,16 @@ resource "aws_autoscaling_group" "this" {
   protect_from_scale_in     = var.protect_from_scale_in
 
   tags = concat(
-      tolist([tomap({"key" = "Name", "value" = var.name, "propagate_at_launch" = true})]),
-      var.tags,
-      local.tags_asg_format
-   )
+    [
+      {
+        "key" = "Name" 
+        "value" = var.name
+        "propagate_at_launch" = true
+      }
+    ],
+    var.tags,
+    local.tags_asg_format
+  )
 
   lifecycle {
     create_before_destroy = true
