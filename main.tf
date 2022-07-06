@@ -25,7 +25,6 @@ resource "aws_launch_configuration" "this" {
       volume_type = ebs_block_device.volume_type
       volume_size = ebs_block_device.volume_size
       iops = ebs_block_device.iops
-      throughput = ebs_block_device.throughput
       delete_on_termination = ebs_block_device.delete_on_termination
       encrypted = ebs_block_device.encrypted
       no_device = ebs_block_device.no_device
@@ -40,7 +39,6 @@ resource "aws_launch_configuration" "this" {
       volume_type = root_block_device.volume_type
       volume_size = root_block_device.volume_size
       iops = root_block_device.iops
-      throughput = root_block_device.throughput
       delete_on_termination = root_block_device.delete_on_termination
       encrypted = root_block_device.encrypted
     }
@@ -50,7 +48,6 @@ resource "aws_launch_configuration" "this" {
     for_each = var.ephemeral_block_device
     content {
       device_name = ephemeral_block_device.device_name
-      no_device = ephemeral_block_device.no_device
       virtual_name = ephemeral_block_device.virtual_name
     }
   }
