@@ -62,7 +62,7 @@ resource "aws_launch_configuration" "this" {
 # Autoscaling group
 ####################
 resource "aws_autoscaling_group" "this" {
-  count = "${var.create_asg}"
+  count = var.create_asg ? 1 : 0
 
   name_prefix          = "${join("-", compact(tolist([coalesce(var.asg_name, var.name), var.recreate_asg_when_lc_changes ? element(concat(random_pet.asg_name.*.id, tolist([""])), 0) : ""])))}-"
   launch_configuration = "${var.create_lc ? element(aws_launch_configuration.this.*.name, 0) : var.launch_configuration}"
