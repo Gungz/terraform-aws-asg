@@ -91,7 +91,7 @@ resource "aws_autoscaling_group" "this" {
   protect_from_scale_in     = "${var.protect_from_scale_in}"
 
   tags = ["${concat(
-      list(tomap({"key" = "Name", "value" = var.name, "propagate_at_launch" = true})),
+      tolist([tomap({"key" = "Name", "value" = var.name, "propagate_at_launch" = true})]),
       var.tags,
       local.tags_asg_format
    )}"]
