@@ -20,14 +20,14 @@ resource "aws_launch_configuration" "this" {
   dynamic "ebs_block_device" {
     for_each = var.ebs_block_device
     content {
-      device_name = ebs_block_device.device_name
-      snapshot_id = ebs_block_device.snapshot_id
-      volume_type = ebs_block_device.volume_type
-      volume_size = ebs_block_device.volume_size
-      iops = ebs_block_device.iops
-      delete_on_termination = ebs_block_device.delete_on_termination
-      encrypted = ebs_block_device.encrypted
-      no_device = ebs_block_device.no_device
+      device_name = ebs_block_device["device_name"]
+      snapshot_id = ebs_block_device["snapshot_id"]
+      volume_type = ebs_block_device["volume_type"]
+      volume_size = ebs_block_device["volume_size"]
+      iops = ebs_block_device["iops"]
+      delete_on_termination = ebs_block_device["delete_on_termination"]
+      encrypted = ebs_block_device["encrypted"]
+      no_device = ebs_block_device["no_device"]
     }
   }
   
@@ -36,19 +36,19 @@ resource "aws_launch_configuration" "this" {
   dynamic "root_block_device" {
     for_each = var.root_block_device
     content {
-      volume_type = root_block_device.volume_type
-      volume_size = root_block_device.volume_size
-      iops = root_block_device.iops
-      delete_on_termination = root_block_device.delete_on_termination
-      encrypted = root_block_device.encrypted
+      volume_type = root_block_device["volume_type"]
+      volume_size = root_block_device["volume_size"]
+      iops = root_block_device["iops"]
+      delete_on_termination = root_block_device["delete_on_termination"]
+      encrypted = root_block_device["encrypted"]
     }
   }
   
   dynamic "ephemeral_block_device" {
     for_each = var.ephemeral_block_device
     content {
-      device_name = ephemeral_block_device.device_name
-      virtual_name = ephemeral_block_device.virtual_name
+      device_name = ephemeral_block_device["device_name"]
+      virtual_name = ephemeral_block_device["virtual_name"]
     }
   }
   
