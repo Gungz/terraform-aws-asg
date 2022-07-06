@@ -66,9 +66,9 @@ resource "aws_launch_configuration" "this" {
 resource "aws_autoscaling_group" "this" {
   count = "${var.create_asg}"
 
-  name_prefix          = "${join("-", compact(list(coalesce(var.asg_name, var.name), var.recreate_asg_when_lc_changes ? element(concat(random_pet.asg_name.*.id, list("")), 0) : "")))}-"
+  name_prefix          = "${join("-", compact(tolist([coalesce(var.asg_name, var.name), var.recreate_asg_when_lc_changes ? element(concat(random_pet.asg_name.*.id, tolist([""])), 0) : ""])))}-"
   launch_configuration = "${var.create_lc ? element(aws_launch_configuration.this.*.name, 0) : var.launch_configuration}"
-  vpc_zone_identifier  = ["${var.vpc_zone_identifier}"]
+  vpc_zone_identifier  = var.vpc_zone_identifier
   max_size             = "${var.max_size}"
   min_size             = "${var.min_size}"
   desired_capacity     = "${var.desired_capacity}"
@@ -85,13 +85,13 @@ resource "aws_autoscaling_group" "this" {
   termination_policies      = "${var.termination_policies}"
   suspended_processes       = "${var.suspended_processes}"
   placement_group           = "${var.placement_group}"
-  enabled_metrics           = ["${var.enabled_metrics}"]
+  enabled_metrics           = var.enabled_metrics
   metrics_granularity       = "${var.metrics_granularity}"
   wait_for_capacity_timeout = "${var.wait_for_capacity_timeout}"
   protect_from_scale_in     = "${var.protect_from_scale_in}"
 
   tags = ["${concat(
-      list(map("key", "Name", "value", var.name, "propagate_at_launch", true)),
+      list(tomap({"key" = "Name", "value" = var.name, "propagate_at_launch" = true})),
       var.tags,
       local.tags_asg_format
    )}"]
